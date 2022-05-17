@@ -1,3 +1,6 @@
 #### todo
 
-read riscv spec
+- [] support `sh`, `sb`
+- [] correctness verification
+- [] support mapped io
+- [] support uart
