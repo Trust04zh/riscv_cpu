@@ -47,7 +47,7 @@ always @(negedge clk or posedge rst) begin
     end
 end
 
-riscv_icache u_riscv_icache(
+riscv_cache_i u_riscv_cache_i(
     // output
     .inst(inst)
     // input

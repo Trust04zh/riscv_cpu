@@ -39,10 +39,10 @@ reg [31:0] cache_d_data;
 always @(*) begin
     case (cache_d_read)
         `CACHE_D_READ_LW: cache_d_data = cache_d_data_m;
-        `CACHE_D_READ_LH: cache_d_data = $signed(cache_d_data_m & 32'h0000ffff);
-        `CACHE_D_READ_LHU: cache_d_data = cache_d_data_m & 32'h0000ffff;
-        `CACHE_D_READ_LB: cache_d_data = $signed(cache_d_data_m & 32'h000000ff);
-        `CACHE_D_READ_LBU: cache_d_data = cache_d_data_m & 32'h000000ff;
+        `CACHE_D_READ_LH: cache_d_data = {{16{cache_d_data_m[15]}}, cache_d_data_m[15:0]};
+        `CACHE_D_READ_LHU: cache_d_data = {{16{1'b0}}, cache_d_data_m[15:0]};
+        `CACHE_D_READ_LB: cache_d_data = {{24{cache_d_data_m[15]}}, cache_d_data_m[7:0]};
+        `CACHE_D_READ_LBU: cache_d_data = {{24{1'b0}}, cache_d_data_m[7:0]};
     endcase
 end
 
@@ -151,7 +151,7 @@ riscv_cache_d u_riscv_cache_d(
     // input
     , .clk(clk)
     , .rst(rst)
-    , .cache_d_write_en(cache_d_write_en)
+    , .cache_d_write_en(cache_d_write_en & !rst) // FIXME: rst for async write control
     , .addr(alu_result)
     , .data_to_cache(reg_data_rs2)
 );

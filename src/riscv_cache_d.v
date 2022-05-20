@@ -12,13 +12,19 @@ module riscv_cache_d(
 
 );
 
-reg [31:0] data_to_cache_m;
+reg [3:0] wea;
+
 always @(posedge clk) begin
-    case (cache_d_write)
-        `CACHE_D_WRITE_SW: data_to_cache_m <= data_to_cache;
-        // `CACHE_D_WRITE_SH: data_to_cache_m <= {data_out[31:16], data_to_cache[]};
-        // TODO: support sh, sb
-    endcase 
+    if (cache_d_write_en == 0) begin
+        wea = 4'b0000;
+    end
+    else begin
+        case (cache_d_write)
+            `CACHE_D_WRITE_SW: wea = 4'b1111;
+            `CACHE_D_WRITE_SH: wea = 4'b0011;
+            `CACHE_D_WRITE_SB: wea = 4'b0001;
+        endcase 
+    end
 end
 
 data_ram_32 data_ram_32_i (
@@ -26,9 +32,9 @@ data_ram_32 data_ram_32_i (
     .douta(data_out),
     // input
     .clka(clk | rst), // expected to read/write at posedge // FIXME: rst for async read
-    .wea(cache_d_write_en & !rst), // FIXME: rst for async write control
+    .wea(wea), 
     .addra(addr[15:2]), 
-    .dina(data_to_cache_m) 
+    .dina(data_to_cache) 
     
 );
 

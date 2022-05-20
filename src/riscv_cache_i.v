@@ -7,7 +7,7 @@ module riscv_cache_i(
 
 );
 
-rom_32 u_rom_32(
+ins_rom_32 u_ins_rom_32(
     .clka(~(clk | rst)) // expected to read at negedge // FIXME: rst for async read
     , .addra(addr[15:2])
     , .douta(inst)
