@@ -10,8 +10,12 @@ module riscv_cpu(
 
 );
 
-// from clk_23mhz
+// from clk_wiz
 wire clk;
+clk_wiz u_clk_wiz (
+    .clk_in1(raw_clk)
+    , .clk_out1(clk)
+);
 
 // from ifetch
 wire [31:0] inst;
