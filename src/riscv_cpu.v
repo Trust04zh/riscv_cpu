@@ -4,6 +4,10 @@ module riscv_cpu(
 
     input raw_clk, rst
 
+    // io device
+    , input [23:0] sw
+    , output [23:0] led
+
 );
 
 // from clk_23mhz
@@ -33,7 +37,7 @@ wire [`INST_FMT_LEN-1 : 0] inst_fmt;
 wire [31:0] alu_result;
 wire zero;
 
-// from data cache
+// from io bridge
 wire [31:0] cache_d_data_m;
 reg [31:0] cache_d_data;
 always @(*) begin
@@ -145,15 +149,17 @@ riscv_alu u_riscv_alu(
     , .operand_2(operand_2)
 );
 
-riscv_cache_d u_riscv_cache_d(
+riscv_io_bridge u_riscv_io_bridge(
     // output
     .data_out(cache_d_data_m)
+    , .led(led)
     // input
     , .clk(clk)
     , .rst(rst)
     , .cache_d_write_en(cache_d_write_en & !rst) // FIXME: rst for async write control
     , .addr(alu_result)
     , .data_to_cache(reg_data_rs2)
+    , .sw(sw)
 );
 
 endmodule
