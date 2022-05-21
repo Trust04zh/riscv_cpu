@@ -2,7 +2,7 @@
 
 module riscv_cache_d(
 
-    output reg [31:0] data_out
+    output [31:0] data_out
 
     , input clk, rst
     , input cache_d_write_en
