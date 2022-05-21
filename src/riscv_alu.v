@@ -1,6 +1,6 @@
 `include "riscv_defs.v"
 
-module riscv_alu(
+module riscv_alu (
 
     output reg [31:0] alu_result
     , output zero

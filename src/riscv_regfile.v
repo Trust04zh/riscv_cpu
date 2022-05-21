@@ -1,4 +1,4 @@
-module riscv_regfile(
+module riscv_regfile (
 
     output reg [31:0] reg_data_rs1,
     output reg [31:0] reg_data_rs2,

@@ -1,6 +1,6 @@
 `include "riscv_defs.v"
 
-module riscv_cache_d(
+module riscv_cache_d (
 
     output [31:0] data_out
 
@@ -26,6 +26,8 @@ always @(posedge clk) begin
         endcase 
     end
 end
+
+
 
 data_ram_32 data_ram_32_i (
     // output

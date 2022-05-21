@@ -1,4 +1,4 @@
-module riscv_cache_i(
+module riscv_cache_i (
 
     output [31:0] inst
     

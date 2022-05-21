@@ -1,6 +1,6 @@
 `include "riscv_defs.v"
 
-module ifetch(
+module ifetch (
     
     output [31:0] inst
     , output reg [31:0] pc
