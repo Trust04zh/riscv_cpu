@@ -2,11 +2,18 @@
 
 module riscv_cpu(
 
-    input raw_clk, rst
+    input raw_clk, rst,
 
     // io device
-    , input [23:0] sw
-    , output [23:0] led
+    input [23:0]sw,
+    output [23:0]led,
+    
+    input start_pg,
+    input rx,
+    output tx,
+    
+    output [7:0] segment_tube,
+    output [7:0] segment_en
 
 );
 
@@ -43,6 +50,9 @@ wire zero;
 
 // from io bridge
 wire [31:0] cache_d_data_m;
+
+x_optput_7segment seg(.clk(clk),.rst(rst),.in(cache_d_data_m),.segment_led(segment_tube),.seg_en(segment_en));
+
 reg [31:0] cache_d_data;
 always @(*) begin
     case (cache_d_read)
