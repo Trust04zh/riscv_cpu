@@ -9,6 +9,14 @@ module riscv_cache_d (
     , input [`CACHE_D_WRITE_LEN-1 : 0] cache_d_write
     , input [31:0] addr
     , input data_to_cache
+    
+    // UART Programmer Pinouts 
+    , input upg_rst_i // UPG reset (Active High) 
+    , input upg_clk_i // UPG ram_clk_i (10MHz) 
+    , input upg_wen_i // UPG write enable 
+    , input [13:0] upg_adr_i // UPG write address 
+    , input [31:0] upg_dat_i // UPG write data 
+    , input upg_done_i // 1 if programming is finished
 
 );
 
@@ -28,15 +36,19 @@ always @(posedge clk) begin
 end
 
 
+// CPU work on normal mode when kickOff is 1. 
+// CPU work on Uart communicate mode when kickOff is 0.
+
+wire kickOff = upg_rst_i | (~upg_rst_i & upg_done_i); 
 
 data_ram_32 data_ram_32_i (
     // output
     .douta(data_out),
     // input
-    .clka(clk | rst), // expected to read/write at posedge // FIXME: rst for async read
-    .wea(wea), 
-    .addra(addr[15:2]), 
-    .dina(data_to_cache) 
+    .clka(kickOff ? (clk | rst) : upg_clk_i), // expected to read/write at posedge // FIXME: rst for async read
+    .wea(kickOff ? wea : upg_wen_i), 
+    .addra(kickOff ? addr[15:2] : upg_adr_i), 
+    .dina(kickOff ? data_to_cache : upg_dat_i) 
     
 );
 
