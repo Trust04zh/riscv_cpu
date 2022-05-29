@@ -2,5 +2,7 @@
 !/ip_core/clk_wiz/clk_wiz.xci
 /ip_core/data_ram_32/*
 !/ip_core/data_ram_32/data_ram_32.xci
-/ip_core/ins_rom_32/*
-!/ip_core/ins_rom_32/ins_rom_32.xci
+/ip_core/ins_ram_32/*
+!/ip_core/ins_ram_32/ins_ram_32.xci
+/ip_core/uart_bmpg_0/*
+!/ip_core/uart_bmpg_0/uart_bmpg_0.xci
