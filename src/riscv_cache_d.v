@@ -22,7 +22,7 @@ module riscv_cache_d (
 
 reg [3:0] wea;
 
-always @(posedge clk) begin
+always @(*) begin
     if (cache_d_write_en == 0) begin
         wea = 4'b0000;
     end
