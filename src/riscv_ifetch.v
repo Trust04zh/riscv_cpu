@@ -17,6 +17,13 @@ module ifetch (
     // from controller
     , input [2:0] pc_update
 
+        // UART Programmer Pinouts 
+        , input upg_rst_i // UPG reset (Active High) 
+        , input upg_clk_i // UPG clock (10MHz) 
+        , input upg_wen_i // UPG write enable 
+        , input[13:0] upg_adr_i // UPG write address 
+        , input[31:0] upg_dat_i // UPG write data 
+        , input upg_done_i // 1 if program finished 
     
 );
 
@@ -54,6 +61,12 @@ riscv_cache_i u_riscv_cache_i(
     ,.clk(clk)
     ,.rst(rst)
     ,.addr(pc)
+    ,.upg_rst_i(upg_rst_i)
+    ,.upg_clk_i(upg_clk_i)
+    ,.upg_wen_i(upg_wen_i)
+    ,.upg_adr_i(upg_adr_i)
+    ,.upg_dat_i(upg_dat_i)
+    ,.upg_done_i(upg_done_i)
 );
 
 endmodule

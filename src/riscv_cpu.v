@@ -64,6 +64,28 @@ always @(*) begin
     endcase
 end
 
+//for uart
+wire upg_clk_w; 
+wire upg_wen_w; 
+wire[14:0] upg_adr_w; 
+wire[31:0] upg_dat_w; 
+wire upg_done_w;
+wire spg_bufg; 
+BUFG U1(.I(start_pg), .O(spg_bufg)); // de-twitter
+reg upg_rst;  // Generate UART Programmer reset signal 
+always @ (posedge raw_clk) 
+begin 
+    if (spg_bufg) 
+        upg_rst = 0; 
+    if (rst) 
+        upg_rst = 1; 
+end
+wire do_rst = rst | !upg_rst;
+
+uart_bmpg_0 uart(.upg_clk_i(clk),.upg_rst_i(upg_rst),.upg_rx_i(rx),
+.upg_clk_o(upg_clk_w),.upg_wen_o(upg_wen_w),.upg_adr_o(upg_adr_w),
+.upg_dat_o(upg_dat_w),.upg_done_o(upg_done_w),.upg_tx_o(tx));
+
 ifetch u_ifetch(
     // output
     .inst(inst)
@@ -75,6 +97,13 @@ ifetch u_ifetch(
     , .zero(zero)
     , .alu_result(alu_result)
     , .pc_update(pc_update)
+    // uart
+    ,.upg_rst_i(upg_rst)
+    ,.upg_clk_i(upg_clk_w)
+    ,.upg_wen_i(upg_wen_w&!upg_adr_w[14])
+    ,.upg_adr_i(upg_adr_w)
+    ,.upg_dat_i(upg_dat_w)
+    ,.upg_done_i(upg_done_w)
 );
 
 // parse instruction 
@@ -162,29 +191,6 @@ riscv_alu u_riscv_alu(
     , .operand_1(operand_1)
     , .operand_2(operand_2)
 );
-
-//for uart
-wire upg_clk_w; //链接dmemory32
-wire upg_wen_w; //链接dmemory32
-wire[14:0] upg_adr_w; //链接dmemory32
-wire[31:0] upg_dat_w; //链接dmemory32 and decoder
-wire upg_done_w; //链接dmemory32
-wire spg_bufg; 
-BUFG U1(.I(start_pg), .O(spg_bufg)); // de-twitter
-reg upg_rst;  // Generate UART Programmer reset signal 
-always @ (posedge raw_clk) 
-begin 
-    if (spg_bufg) 
-        upg_rst = 0; 
-    if (rst) 
-        upg_rst = 1; 
-end
-wire do_rst = rst | !upg_rst;
-
-uart_bmpg_0 uart(.upg_clk_i(clk),.upg_rst_i(upg_rst),.upg_rx_i(rx),
-.upg_clk_o(upg_clk_w),.upg_wen_o(upg_wen_w),.upg_adr_o(upg_adr_w),
-.upg_dat_o(upg_dat_w),.upg_done_o(upg_done_w),.upg_tx_o(tx));
-
 
 riscv_io_bridge u_riscv_io_bridge(
     // output
