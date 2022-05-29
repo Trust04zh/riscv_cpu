@@ -17,7 +17,7 @@ module riscv_controller(
 
 );
 
-assign {pc_update, cache_d_write_en, cache_d_write, cache_d_read, alu_src2, alu_op, reg_write_en, reg_write, inst_fmt} =
+assign {pc_update, cache_d_write_en, cache_d_write, cache_d_read, alu_src2, imm_2_extend, alu_op, reg_write_en, reg_write, inst_fmt} =
         ((inst & `INST_MASK_ADD) == `INST_PATT_ADD) ? `INST_ATTR_ADD :
         ((inst & `INST_MASK_SUB) == `INST_PATT_SUB) ? `INST_ATTR_SUB :
         ((inst & `INST_MASK_XOR) == `INST_PATT_XOR) ? `INST_ATTR_XOR :
