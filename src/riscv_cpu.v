@@ -17,11 +17,15 @@ module riscv_cpu(
 
 );
 
-// from clk_wiz
+reg[31:0] debug_clk;
+always @(posedge raw_clk)debug_clk=debug_clk+1;
 wire clk;
+assign clk=debug_clk[24];
+// from clk_wiz
+wire clk_debug_slow;
 clk_wiz u_clk_wiz (
-    .clk_in1(raw_clk)
-    , .clk_out1(clk)
+    .clk_in1(raw_clk)//.clk_in1(raw_clk)
+    , .clk_out1(clk_debug_slow)
 );
 
 // from ifetch
@@ -51,7 +55,10 @@ wire zero;
 // from io bridge
 wire [31:0] cache_d_data_m;
 
-x_optput_7segment seg(.clk(clk),.rst(rst),.in(cache_d_data_m),.segment_led(segment_tube),.seg_en(segment_en));
+// for 7 segnemt tube
+reg[31:0] low_clk;
+always @(posedge raw_clk)low_clk=low_clk+1;//inst
+x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in({pc_update, cache_d_write_en, cache_d_write, cache_d_read, alu_src2, alu_op, reg_write_en, reg_write, inst_fmt}),.segment_led(segment_tube),.seg_en(segment_en));
 
 reg [31:0] cache_d_data;
 always @(*) begin
