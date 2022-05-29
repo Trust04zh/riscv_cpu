@@ -8,7 +8,7 @@ module riscv_cache_d (
     , input cache_d_write_en
     , input [`CACHE_D_WRITE_LEN-1 : 0] cache_d_write
     , input [31:0] addr
-    , input data_to_cache
+    , input [31:0] data_to_cache
     
     // UART Programmer Pinouts 
     , input upg_rst_i // UPG reset (Active High) 
