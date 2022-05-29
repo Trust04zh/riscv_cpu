@@ -71,6 +71,7 @@ riscv_cache_d u_riscv_cache_d(
     , .clk(clk)
     , .rst(rst)
     , .cache_d_write_en(cache_d_write_en & ~is_io)
+    , .cache_d_write(cache_d_write)
     , .addr(addr)
     , .data_to_cache(data_to_cache)
     
