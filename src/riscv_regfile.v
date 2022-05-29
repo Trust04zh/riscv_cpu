@@ -29,7 +29,7 @@ always @(negedge clk or posedge rst) begin
             register[i_1] <= 32'h0000_0000; 
         end
     end
-    else if (reg_write_en == 1) begin
+    else if (reg_write_en == 1 && !(rd == 0)) begin
         register[rd] = data_to_reg;
     end
 end

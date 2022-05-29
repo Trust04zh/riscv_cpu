@@ -135,7 +135,7 @@ always @(*) begin
     case (reg_write)
         `REG_WRITE_ALU: data_to_reg = alu_result;
         `REG_WRITE_MEM: data_to_reg = cache_d_data;
-        `REG_WRITE_PC_PLUS_4: data_to_reg = pc_plus_4;
+        `REG_WRITE_PC: data_to_reg = pc;
         `REG_WRITE_LUI: data_to_reg = imm_20_u << 12;
         `REG_WRITE_AUIPC: data_to_reg = imm_20_u << 12 + pc;
     endcase
