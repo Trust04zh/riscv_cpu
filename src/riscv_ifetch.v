@@ -27,6 +27,7 @@ module ifetch (
     
 );
 
+// pc, pc_plus_4 is one edge later than pc_m
 reg [31:0] pc_m;
 
 // update module inner pc
@@ -37,7 +38,7 @@ always @(posedge clk or posedge rst) begin
         `PC_UPDATE_PLUS_4: pc_m <= pc_plus_4;
         `PC_UPDATE_BRANCH_ZERO: pc_m <= (zero == 1) ? (pc + {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'b0}) : pc_plus_4;
         `PC_UPDATE_BRANCH_N_ZERO: pc_m <= (zero == 0) ? (pc + {{20{inst[31]}}, inst[7], inst[30:25], inst[11:8], 1'b0}) : pc_plus_4;
-        `PC_UPDATE_JUMP: pc_m <= pc + {{12{inst[31]}}, inst[19:12], inst[20], inst[30:21]}; // JAL
+        `PC_UPDATE_JUMP: pc_m <= pc + {{12{inst[31]}}, inst[19:12], inst[20], inst[30:21], 1'b0}; // JAL
         `PC_UPDATE_JR: pc_m <= alu_result; // JALR
     endcase        
 end
@@ -60,7 +61,7 @@ riscv_cache_i u_riscv_cache_i(
     // input
     ,.clk(clk)
     ,.rst(rst)
-    ,.addr(pc)
+    ,.addr(pc_m)
     ,.upg_rst_i(upg_rst_i)
     ,.upg_clk_i(upg_clk_i)
     ,.upg_wen_i(upg_wen_i)

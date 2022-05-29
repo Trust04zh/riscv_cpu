@@ -206,6 +206,7 @@ riscv_io_bridge u_riscv_io_bridge(
     // input
     , .clk(clk)
     , .rst(rst)
+    , .cache_d_write(cache_d_write)
     , .cache_d_write_en(cache_d_write_en & !rst) // FIXME: rst for async write control
     , .addr(alu_result)
     , .data_to_cache(reg_data_rs2)
