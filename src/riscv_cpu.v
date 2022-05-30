@@ -17,18 +17,14 @@ module riscv_cpu(
 
 );
 
-reg[31:0] debug_clk;
-always @(posedge raw_clk)debug_clk=debug_clk+1;
 wire clk;
 // from clk_wiz
-wire clk_debug_slow;
 wire clk_uart;
 clk_wiz u_clk_wiz (
     .clk_in1(raw_clk)//.clk_in1(raw_clk)
-    , .clk_out1(clk_debug_slow)
+    , .clk_out1(clk)
     , .clk_out2(clk_uart)
 );
-    assign clk=clk_debug_slow;
 
 // from ifetch
 wire [31:0] inst;
