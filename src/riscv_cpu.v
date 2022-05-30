@@ -59,8 +59,10 @@ wire [31:0] cache_d_data_m;
 
 // for 7 segnemt tube
 reg[31:0] low_clk;
+wire[31:0] led_raw;
+assign led = led_raw[23:0];
 always @(posedge raw_clk)low_clk=low_clk+1;//inst
-x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in({{8{1'b0}}, led}),.segment_led(segment_tube),.seg_en(segment_en));
+x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in(led_raw),.segment_led(segment_tube),.seg_en(segment_en));
 
 reg [31:0] cache_d_data;
 always @(*) begin
@@ -204,7 +206,7 @@ riscv_alu u_riscv_alu(
 riscv_io_bridge u_riscv_io_bridge(
     // output
     .data_out(cache_d_data_m)
-    , .led(led)
+    , .led(led_raw)
     // input
     , .clk(clk)
     , .rst(rst)

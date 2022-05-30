@@ -4,7 +4,7 @@ module riscv_io_bridge (
     
     output [31:0] data_out
 
-    , output reg [23:0] led 
+    , output reg [31:0] led 
 
     , input clk, rst
     , input cache_d_write_en
@@ -59,7 +59,7 @@ always @(posedge clk) begin
             `CACHE_D_WRITE_SB: data_to_io <= {data_out[31:8], data_to_cache[7:0]};
         endcase 
         if (is_led) begin
-            led <= data_to_io[23:0];
+            led <= data_to_io;
         end
     end
 end
