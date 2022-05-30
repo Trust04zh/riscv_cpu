@@ -20,13 +20,15 @@ module riscv_cpu(
 reg[31:0] debug_clk;
 always @(posedge raw_clk)debug_clk=debug_clk+1;
 wire clk;
-assign clk=debug_clk[24];
 // from clk_wiz
 wire clk_debug_slow;
+wire clk_uart;
 clk_wiz u_clk_wiz (
     .clk_in1(raw_clk)//.clk_in1(raw_clk)
     , .clk_out1(clk_debug_slow)
+    , .clk_out2(clk_uart)
 );
+    assign clk=clk_debug_slow;
 
 // from ifetch
 wire [31:0] inst;
@@ -58,7 +60,7 @@ wire [31:0] cache_d_data_m;
 // for 7 segnemt tube
 reg[31:0] low_clk;
 always @(posedge raw_clk)low_clk=low_clk+1;//inst
-x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in({pc_update, cache_d_write_en, cache_d_write, cache_d_read, alu_src2, alu_op, reg_write_en, reg_write, inst_fmt}),.segment_led(segment_tube),.seg_en(segment_en));
+x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in({{8{1'b0}}, led}),.segment_led(segment_tube),.seg_en(segment_en));
 
 reg [31:0] cache_d_data;
 always @(*) begin
@@ -89,7 +91,7 @@ begin
 end
 wire do_rst = rst | !upg_rst;
 
-uart_bmpg_0 uart(.upg_clk_i(clk),.upg_rst_i(upg_rst),.upg_rx_i(rx),
+uart_bmpg_0 uart(.upg_clk_i(clk_uart),.upg_rst_i(upg_rst),.upg_rx_i(rx),
 .upg_clk_o(upg_clk_w),.upg_wen_o(upg_wen_w),.upg_adr_o(upg_adr_w),
 .upg_dat_o(upg_dat_w),.upg_done_o(upg_done_w),.upg_tx_o(tx));
 
