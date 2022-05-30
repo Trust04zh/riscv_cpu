@@ -124,7 +124,7 @@ wire [2:0] funct3 = inst[14:12];
 wire [4:0] rs1 = inst[19:15];
 wire [4:0] rs2 = inst[24:20];
 wire [6:0] funct7 = inst[31:25];
-wire [4:0] imm_5 = inst[11:7];
+wire [4:0] imm_5 = inst[24:20];
 wire [11:0] imm_12_i = inst[31:20]; // imm_12_i
 wire [11:0] imm_12_s = {inst[31:25], inst[11:7]}; // imm_12_s
 // imm_12_b only used in ifetch
