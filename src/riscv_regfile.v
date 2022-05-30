@@ -25,7 +25,7 @@ always @(negedge clk or posedge rst) begin
     if (rst == 1) begin
         register[0] <= 32'h0000_0000;
         register[1] <= 32'h0000_0000;
-        register[2] <= 32'h7fff_ffff;
+        register[2] <= 32'h8000_0000;
         register[3] <= 32'h0000_0000;
         register[4] <= 32'h0000_0000;
         register[5] <= 32'h0000_0000;
