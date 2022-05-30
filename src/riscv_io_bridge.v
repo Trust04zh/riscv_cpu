@@ -27,7 +27,6 @@ module riscv_io_bridge (
 wire is_io, is_sw, is_led;
 reg [31:0] data_out_io;
 wire [31:0] data_out_cache;
-reg [31:0] data_to_io;
 
 // io reserved: 0xfffffc00 - 0xfffffcff
 //assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
@@ -46,20 +45,27 @@ always @(*) begin
         data_out_io = {8'h00, sw};
     end
     else if (is_led) begin
-        data_out_io = {8'h00, led};
+        data_out_io = led;
     end
     else begin
         data_out_io = 32'h00000000;
     end
+end
+
+// write io
+reg [31:0] data_to_io;
+always @(*) begin
     case (cache_d_write)
         `CACHE_D_WRITE_SW: data_to_io = data_to_cache;
         `CACHE_D_WRITE_SH: data_to_io = {data_out[31:16], data_to_cache[15:0]};
         `CACHE_D_WRITE_SB: data_to_io = {data_out[31:8], data_to_cache[7:0]};
     endcase 
 end
-
-always @(posedge clk) begin
-    if (cache_d_write_en & is_io) begin
+always @(posedge clk or posedge rst) begin
+    if (rst == 1) begin
+        led <= 32'h0000_0000;
+    end
+    else if (cache_d_write_en & is_io) begin
         if (is_led) begin
             led <= data_to_io;
         end
