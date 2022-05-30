@@ -23,7 +23,7 @@ always @(*) begin
         `ALU_OP_XOR: alu_result = operand_1 ^ operand_2;
         `ALU_OP_SLL: alu_result = operand_1 << operand_2[4:0];
         `ALU_OP_SRL: alu_result = operand_1 >> operand_2[4:0];
-        `ALU_OP_SRA: alu_result = operand_1 >>> operand_2[4:0];
+        `ALU_OP_SRA: alu_result = $signed(operand_1) >>> operand_2[4:0];
         `ALU_OP_SLT: alu_result = $signed(operand_1) < $signed(operand_2);
         `ALU_OP_SLTU: alu_result = $unsigned(operand_1) < $unsigned(operand_2);
     endcase
