@@ -30,11 +30,14 @@ wire [31:0] data_out_cache;
 reg [31:0] data_to_io;
 
 // io reserved: 0xfffffc00 - 0xfffffcff
-assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
+//assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
+assign is_io = ((addr & 32'hffffff00) == 32'hfcfffc00);
 // sw: 0xfffffc01 - 0xfffffc03
-assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
+//assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
+assign is_sw = ((addr & 32'hfffffffc) == 32'hfcfffc00);
 // led: 0xfffffc05 - 0xfffffc07
-assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
+//assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
+assign is_led = ((addr & 32'hfffffffc) == 32'hfcfffc04);
 assign data_out = (is_io == 1) ? data_out_io : data_out_cache;
 
 // read io
@@ -55,15 +58,8 @@ always @(*) begin
     endcase 
 end
 
-// write io
-reg [31:0] data_to_io;
 always @(posedge clk) begin
     if (cache_d_write_en & is_io) begin
-        case (cache_d_write)
-            `CACHE_D_WRITE_SW: data_to_io <= data_to_cache;
-            `CACHE_D_WRITE_SH: data_to_io <= {data_out[31:16], data_to_cache[15:0]};
-            `CACHE_D_WRITE_SB: data_to_io <= {data_out[31:8], data_to_cache[7:0]};
-        endcase 
         if (is_led) begin
             led <= data_to_io;
         end
