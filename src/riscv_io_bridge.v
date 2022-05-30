@@ -31,13 +31,13 @@ reg [31:0] data_to_io;
 
 // io reserved: 0xfffffc00 - 0xfffffcff
 //assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
-assign is_io = ((addr & 32'hffffff00) == 32'hfcfffc00);
+assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
 // sw: 0xfffffc01 - 0xfffffc03
 //assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
-assign is_sw = ((addr & 32'hfffffffc) == 32'hfcfffc00);
+assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
 // led: 0xfffffc05 - 0xfffffc07
 //assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
-assign is_led = ((addr & 32'hfffffffc) == 32'hfcfffc04);
+assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
 assign data_out = (is_io == 1) ? data_out_io : data_out_cache;
 
 // read io
