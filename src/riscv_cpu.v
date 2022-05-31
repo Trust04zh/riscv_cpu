@@ -2,18 +2,19 @@
 
 module riscv_cpu(
 
-    input raw_clk, rst,
+    input raw_clk, rst
 
     // io device
-    input [23:0]sw,
-    output [23:0]led,
+    , input [23:0] sw
+    , input [3:0] keyboard
+    , output [23:0] led
     
-    input start_pg,
-    input rx,
-    output tx,
+    , input start_pg
+    , input rx
+    , output tx
     
-    output [7:0] segment_tube,
-    output [7:0] segment_en
+    , output [7:0] segment_tube
+    , output [7:0] segment_en
 
 );
 
@@ -211,6 +212,7 @@ riscv_io_bridge u_riscv_io_bridge(
     , .addr(alu_result)
     , .data_to_cache(reg_data_rs2)
     , .sw(sw)
+    , .keyboard(keyboard)
     // uart
     ,.upg_rst_i(upg_rst)
     ,.upg_clk_i(upg_clk_w)

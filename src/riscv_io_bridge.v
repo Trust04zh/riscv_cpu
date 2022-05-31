@@ -13,7 +13,8 @@ module riscv_io_bridge (
     , input [31:0] data_to_cache 
 
     , input [23:0] sw 
-    
+    , input [3:0] keyboard
+
     // UART Programmer Pinouts 
     , input upg_rst_i // UPG reset (Active High) 
     , input upg_clk_i // UPG ram_clk_i (10MHz) 
@@ -24,19 +25,18 @@ module riscv_io_bridge (
 
 );
 
-wire is_io, is_sw, is_led;
+wire is_io, is_sw, is_led, is_kb;
 reg [31:0] data_out_io;
 wire [31:0] data_out_cache;
 
 // io reserved: 0xfffffc00 - 0xfffffcff
-//assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
 assign is_io = ((addr & 32'hffffff00) == 32'hfffffc00);
 // sw: 0xfffffc01 - 0xfffffc03
-//assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
 assign is_sw = ((addr & 32'hfffffffc) == 32'hfffffc00);
 // led: 0xfffffc05 - 0xfffffc07
-//assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
 assign is_led = ((addr & 32'hfffffffc) == 32'hfffffc04);
+// kb(keyboard): 0xfffffc0b - 0xfffffc0b
+assign is_kb = ((addr & 32'hfffffffc) == 32'hfffffc08);
 assign data_out = (is_io == 1) ? data_out_io : data_out_cache;
 
 // read io
@@ -46,6 +46,9 @@ always @(*) begin
     end
     else if (is_led) begin
         data_out_io = led;
+    end
+    else if (is_kb) begin
+        data_out_io = {24'h000000, keyboard};
     end
     else begin
         data_out_io = 32'h00000000;
