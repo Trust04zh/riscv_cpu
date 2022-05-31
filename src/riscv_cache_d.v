@@ -31,7 +31,7 @@ always @(*) begin
         case (cache_d_write)
             `CACHE_D_WRITE_SW: begin
                 wea = 4'b1111;
-                data_to_cache_m = data_to_cache
+                data_to_cache_m = data_to_cache;
             end
             `CACHE_D_WRITE_SH: case (addr[1])
                 1'b0: begin
