@@ -46,7 +46,7 @@ data_ram_32 data_ram_32_i (
     .douta(data_out),
     // input
     .clka(kickOff ? (clk | rst) : upg_clk_i), // expected to read/write at posedge // FIXME: rst for async read
-    .wea(kickOff ? wea : upg_wen_i), 
+    .wea(kickOff ? wea : (upg_wen_i?4'b1111:4'b0)), 
     .addra(kickOff ? addr[15:2] : upg_adr_i), 
     .dina(kickOff ? data_to_cache : upg_dat_i) 
     
