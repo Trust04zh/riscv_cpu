@@ -6,7 +6,6 @@ module riscv_cpu(
 
     // io device
     , input [23:0] sw
-    , input [3:0] keyboard
     , output [23:0] led
     
     , input start_pg
@@ -15,7 +14,10 @@ module riscv_cpu(
     
     , output [7:0] segment_tube
     , output [7:0] segment_en
-
+    
+    
+    , input [3:0] row
+    , output [3:0] col
 );
 
 wire clk;
@@ -200,6 +202,8 @@ riscv_alu u_riscv_alu(
     , .operand_2(operand_2)
 );
 
+wire [4:0] keyboard;
+
 riscv_io_bridge u_riscv_io_bridge(
     // output
     .data_out(cache_d_data_m)
@@ -223,5 +227,6 @@ riscv_io_bridge u_riscv_io_bridge(
 
 );
 
+key16 keys(.clk(clk), .row(row), .col(col), .key(keyboard));
 
 endmodule

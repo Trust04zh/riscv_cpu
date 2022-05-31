@@ -13,7 +13,7 @@ module riscv_io_bridge (
     , input [31:0] data_to_cache 
 
     , input [23:0] sw 
-    , input [3:0] keyboard
+    , input [4:0] keyboard
 
     // UART Programmer Pinouts 
     , input upg_rst_i // UPG reset (Active High) 
@@ -48,7 +48,7 @@ always @(*) begin
         data_out_io = led;
     end
     else if (is_kb) begin
-        data_out_io = {24'h000000, keyboard};
+        data_out_io = {23'h000000, keyboard};
     end
     else begin
         data_out_io = 32'h00000000;
