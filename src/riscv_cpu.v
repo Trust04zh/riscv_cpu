@@ -72,19 +72,19 @@ always @(*) begin
             cache_d_data = cache_d_data_m;
         end 
         `CACHE_D_READ_LH: begin
-            case (addr[30]) 
+            case (addr[1])
                 1'b0: cache_d_data = {{16{cache_d_data_m[15]}}, cache_d_data_m[15:0]}; 
                 1'b1: cache_d_data = {{16{cache_d_data_m[31]}}, cache_d_data_m[31:16]};
             endcase
         end
         `CACHE_D_READ_LHU: begin
-            case (addr[30])
+            case (addr[1])
                 1'b0: cache_d_data = {{16{1'b0}}, cache_d_data_m[15:0]};
                 1'b1: cache_d_data = {{16{1'b0}}, cache_d_data_m[31:16]};
             endcase
         end
         `CACHE_D_READ_LB: begin
-            case (addr[31:30])
+            case (addr[1:0])
                 2'b00: cache_d_data = {{24{cache_d_data_m[7]}}, cache_d_data_m[7:0]};
                 2'b01: cache_d_data = {{24{cache_d_data_m[15]}}, cache_d_data_m[15:8]};
                 2'b10: cache_d_data = {{24{cache_d_data_m[23]}}, cache_d_data_m[23:16]};
@@ -92,7 +92,7 @@ always @(*) begin
             endcase
         end
         `CACHE_D_READ_LBU: begin
-            case (addr[31:30])
+            case (addr[1:0])
                 2'b00: cache_d_data = {{24{1'b0}}, cache_d_data_m[7:0]};
                 2'b01: cache_d_data = {{24{1'b0}}, cache_d_data_m[15:8]};
                 2'b10: cache_d_data = {{24{1'b0}}, cache_d_data_m[23:16]};
