@@ -5,6 +5,6 @@
 #### todo
 
 - [] correctness verification
-- [] 解决uart和lb的冲突问题
+- [Y] 解决uart和lb的冲突问题
 - [Y] support mapped io
 - [Y] support uart
