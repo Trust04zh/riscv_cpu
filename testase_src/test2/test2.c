@@ -163,7 +163,7 @@ void test011() {
 void test100() {
     int set = getNbits(11, 12, input);
     if (set & 1) { // set == 0b01 || set == 0b11
-        output(arr[set][n - 1] - arr[set][0]);
+        output((arr[set][n - 1] - arr[set][0]) & 0xff);
     }
 }
 
