@@ -64,13 +64,41 @@ always @(posedge raw_clk)low_clk=low_clk+1;//inst
 x_optput_7segment seg(.clk(low_clk[16]),.rst(rst),.in(led_raw),.segment_led(segment_tube),.seg_en(segment_en));
 
 reg [31:0] cache_d_data;
+wire [31:0] addr;
+assign addr = alu_result;
 always @(*) begin
     case (cache_d_read)
-        `CACHE_D_READ_LW: cache_d_data = cache_d_data_m;
-        `CACHE_D_READ_LH: cache_d_data = {{16{cache_d_data_m[15]}}, cache_d_data_m[15:0]};
-        `CACHE_D_READ_LHU: cache_d_data = {{16{1'b0}}, cache_d_data_m[15:0]};
-        `CACHE_D_READ_LB: cache_d_data = {{24{cache_d_data_m[15]}}, cache_d_data_m[7:0]};
-        `CACHE_D_READ_LBU: cache_d_data = {{24{1'b0}}, cache_d_data_m[7:0]};
+        `CACHE_D_READ_LW: begin
+            cache_d_data = cache_d_data_m;
+        end 
+        `CACHE_D_READ_LH: begin
+            case (addr[30]) 
+                1'b0: cache_d_data = {{16{cache_d_data_m[15]}}, cache_d_data_m[15:0]}; 
+                1'b1: cache_d_data = {{16{cache_d_data_m[31]}}, cache_d_data_m[31:16]};
+            endcase
+        end
+        `CACHE_D_READ_LHU: begin
+            case (addr[30])
+                1'b0: cache_d_data = {{16{1'b0}}, cache_d_data_m[15:0]};
+                1'b1: cache_d_data = {{16{1'b0}}, cache_d_data_m[31:16]};
+            endcase
+        end
+        `CACHE_D_READ_LB: begin
+            case (addr[30:31])
+                2'b00: cache_d_data = {{24{cache_d_data_m[7]}}, cache_d_data_m[7:0]};
+                2'b01: cache_d_data = {{24{cache_d_data_m[15]}}, cache_d_data_m[15:8]};
+                2'b10: cache_d_data = {{24{cache_d_data_m[23]}}, cache_d_data_m[23:16]};
+                2'b11: cache_d_data = {{24{cache_d_data_m[31]}}, cache_d_data_m[31:24]};
+            endcase
+        end
+        `CACHE_D_READ_LBU: begin
+            case (addr[30:31])
+                2'b00: cache_d_data = {{24{1'b0}}, cache_d_data_m[7:0]};
+                2'b01: cache_d_data = {{24{1'b0}}, cache_d_data_m[15:8]};
+                2'b10: cache_d_data = {{24{1'b0}}, cache_d_data_m[23:16]};
+                2'b11: cache_d_data = {{24{1'b0}}, cache_d_data_m[31:24]};
+            endcase
+        end
     endcase
 end
 
@@ -213,7 +241,7 @@ riscv_io_bridge u_riscv_io_bridge(
     , .rst(rst)
     , .cache_d_write(cache_d_write)
     , .cache_d_write_en(cache_d_write_en & !rst) // FIXME: rst for async write control
-    , .addr(alu_result)
+    , .addr(addr)
     , .data_to_cache(reg_data_rs2)
     , .sw(sw)
     , .keyboard(keyboard)
