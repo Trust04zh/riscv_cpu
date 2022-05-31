@@ -21,6 +21,7 @@ module riscv_cache_d (
 );
 
 reg [3:0] wea;
+reg [31:0] data_to_cache_m;
 
 always @(*) begin
     if (cache_d_write_en == 0) begin
@@ -28,16 +29,37 @@ always @(*) begin
     end
     else begin
         case (cache_d_write)
-            `CACHE_D_WRITE_SW: wea = 4'b1111;
+            `CACHE_D_WRITE_SW: begin
+                wea = 4'b1111;
+                data_to_cache_m = data_to_cache
+            end
             `CACHE_D_WRITE_SH: case (addr[1])
-                1'b0: wea = 4'b0011;
-                1'b1: wea = 4'b1100;
+                1'b0: begin
+                    wea = 4'b0011;
+                    data_to_cache_m = {{16{1'b0}}, data_to_cache[15:0]};
+                end
+                1'b1: begin
+                    wea = 4'b1100;
+                    data_to_cache_m = {data_to_cache[15:0], {16{1'b0}}};
+                end
             endcase
             `CACHE_D_WRITE_SB: case (addr[1:0])
-                2'b00: wea = 4'b0001;
-                2'b01: wea = 4'b0010;
-                2'b10: wea = 4'b0100;
-                2'b11: wea = 4'b1000;
+                2'b00: begin
+                    wea = 4'b0001;
+                    data_to_cache_m = {{24{1'b0}}, data_to_cache[7:0]};
+                end
+                2'b01: begin
+                    wea = 4'b0010;
+                    data_to_cache_m = {{16{1'b0}}, data_to_cache[7:0], {8{1'b0}}};
+                end
+                2'b10: begin 
+                    wea = 4'b0100;
+                    data_to_cache_m = {{8{1'b0}}, data_to_cache[7:0], {16{1'b0}}};
+                end
+                2'b11: begin
+                    wea = 4'b1000;
+                    data_to_cache_m = {data_to_cache[7:0], {24{1'b0}}};
+                end
             endcase
         endcase 
     end
@@ -56,7 +78,7 @@ data_ram_32 data_ram_32_i (
     .clka(kickOff ? (clk | rst) : upg_clk_i), // expected to read/write at posedge // FIXME: rst for async read
     .wea(kickOff ? wea : (upg_wen_i?4'b1111:4'b0)), 
     .addra(kickOff ? addr[15:2] : upg_adr_i), 
-    .dina(kickOff ? data_to_cache : upg_dat_i) 
+    .dina(kickOff ? data_to_cache_m : upg_dat_i) 
     
 );
 
