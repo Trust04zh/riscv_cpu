@@ -3,11 +3,16 @@
 #include<iostream>
 using namespace std;
 #define input 0b0000000000011111
+#define kinput 0b0000000000011111
 #define output(x) cout<<x<<endl
 #else
 #define input *(int*)(0xfffffc00)
 #define output(x) *(int*)(0xfffffc04) = x
+#define kinput *(int*)(0xfffffc08)
 #endif
+#define false 0
+#define true 1
+
 void test000();
 void test001();
 void test010();
@@ -20,7 +25,7 @@ int getNbits(int start, int end, int raw);
 
 int A = 0xdeadbeef;
 int B = 0xcafebabe;
-
+int flag_not_switch = false;
 
 int main() {
 	while (1) {
@@ -97,13 +102,35 @@ void test000() {
 }
 
 void test001() {
-	if (getNbits(19, 19, input)) {
-		A = getNbits(0, 15, input);
-		output(A);
+	int k = kinput;
+	if (getNbits(0, 15, input)) {
+		flag_not_switch = false;
 	}
-	else if (getNbits(20, 20, input)) {
-		B = getNbits(0, 15, input);
-		output(B);
+	if (k >> 4 && !flag_not_switch) { // keyboard not pressed
+		if (getNbits(19, 19, input)) {
+			A = getNbits(0, 15, input);
+			output(A);
+		}
+		else if (getNbits(20, 20, input)) {
+			B = getNbits(0, 15, input);
+			output(B);
+		}
+	}
+	else if (k >> 4 == 0) { // keyboard
+		flag_not_switch = true;
+		int offset = getNbits(21, 23, input);
+		offset <<= 2;
+		int mask = 0xf << offset;
+		mask &= A;
+		A ^= mask;
+		if (getNbits(19, 19, input)) {
+			A |= (k << offset);
+			output(A);
+		}
+		else if (getNbits(20, 20, input)) {
+			B |= (k << offset);
+			output(B);
+		}
 	}
 }
 
