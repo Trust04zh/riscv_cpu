@@ -5,15 +5,12 @@
 
 移位运算移动的位宽取低8位(0-31)  
 
-#### todo
+## Features
 
-- [ ] correctness verification
-  + [x] 测试场景1
-  + [ ] 测试场景1交叉验证
-  + [ ] 测试场景2
-  + [ ] 测试场景2交叉验证
-  + [ ] 测试场景3
-  + [ ] 测试场景3交叉验证
+- [x] Let's hash! sha256手动挖矿 & 自动挖矿 & 哈希爆破
+  + [x] 正向hash (POW1)
+  + [x] 对比和MIPS的hash速率
+  + [x] 逆算hash (POW2)  
 - [x] 构建risc-v工具链
   + [x] C到asm （本地编译github.com/riscv-collab/riscv-gnu-toolchain）
   + [x] asm到coe （objcopy + 脚本处理）
