@@ -21,6 +21,7 @@
 - [ ] 提供RISCV工具链在线服务
 - [x] 提供MIPS工具链在线服务
 - [x] 支持byte和half io （解决uart和ram的lb冲突问题）
+- [x] 支持不跨字的内存非对齐访问
 - [x] support multiple io device
   + [x] 7位数码管
   + [x] 小键盘

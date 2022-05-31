@@ -60,8 +60,16 @@ reg [31:0] data_to_io;
 always @(*) begin
     case (cache_d_write)
         `CACHE_D_WRITE_SW: data_to_io = data_to_cache;
-        `CACHE_D_WRITE_SH: data_to_io = {data_out[31:16], data_to_cache[15:0]};
-        `CACHE_D_WRITE_SB: data_to_io = {data_out[31:8], data_to_cache[7:0]};
+        `CACHE_D_WRITE_SH: case (addr[1])
+            1'b0: data_to_io = {data_out[31:16], data_to_cache[15:0]};
+            1'b1: data_to_io = {data_to_cache[31:16], data_out[15:0]};
+        endcase
+        `CACHE_D_WRITE_SB: case (addr[1:0])
+            2'b00: data_to_io = {data_out[31:8], data_to_cache[7:0]};
+            2'b01: data_to_io = {data_out[31:16], data_to_cache[15:8], data_out[7:0]};
+            2'b10: data_to_io = {data_out[31:24], data_to_cache[23:16], data_out[15:0]};
+            2'b11: data_to_io = {data_to_cache[31:24], data_out[23:0]};
+        endcase
     endcase 
 end
 always @(posedge clk or posedge rst) begin

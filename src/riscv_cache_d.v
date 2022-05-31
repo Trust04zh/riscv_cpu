@@ -29,8 +29,16 @@ always @(*) begin
     else begin
         case (cache_d_write)
             `CACHE_D_WRITE_SW: wea = 4'b1111;
-            `CACHE_D_WRITE_SH: wea = 4'b0011;
-            `CACHE_D_WRITE_SB: wea = 4'b0001;
+            `CACHE_D_WRITE_SH: case (addr[1])
+                1'b0: wea = 4'b0011;
+                1'b1: wea = 4'b1100;
+            endcase
+            `CACHE_D_WRITE_SB: case (addr[1:0])
+                2'b00: wea = 4'b0001;
+                2'b01: wea = 4'b0010;
+                2'b10: wea = 4'b0100;
+                2'b11: wea = 4'b1000;
+            endcase
         endcase 
     end
 end
