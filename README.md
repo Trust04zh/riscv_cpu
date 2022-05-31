@@ -13,10 +13,10 @@
   + [] 测试场景2交叉验证
   + [] 测试场景3
   + [] 测试场景3交叉验证
-- [] 构建risc-v工具链
+- [Y] 构建risc-v工具链
   + [Y] C到asm （本地编译github.com/riscv-collab/riscv-gnu-toolchain）
   + [Y] asm到coe （objcopy + 脚本处理）
-  + [] coe到out.txt（UARTCoe_v3.0.exe只识别MIPS指令）
+  + [Y] coe到out.txt（UARTCoe_v3.0.exe只识别MIPS指令）
 - [] 提供RISCV工具链在线服务
 - [Y] 提供MIPS工具链在线服务
 - [Y] 支持byte和half io （解决uart和ram的lb冲突问题）

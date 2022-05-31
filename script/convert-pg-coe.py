@@ -31,3 +31,9 @@ for i in range(len(raw_data), padding << 1):
 
 write_coe("prgmip32.coe", raw_data[:padding])
 write_coe("dmem32.coe", raw_data[padding:])
+out_txt = open("out.txt", "w")
+out_txt.write("03020000")
+for i in raw_data:
+    out_txt.write(i.hex())
+
+out_txt.close()
