@@ -36,4 +36,5 @@ out_txt.write("03020000")
 for i in raw_data:
     out_txt.write(i.hex())
 
+out_txt.write("000000")  # padding for get uart output
 out_txt.close()
