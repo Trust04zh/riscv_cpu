@@ -84,7 +84,7 @@ always @(*) begin
             endcase
         end
         `CACHE_D_READ_LB: begin
-            case (addr[30:31])
+            case (addr[31:30])
                 2'b00: cache_d_data = {{24{cache_d_data_m[7]}}, cache_d_data_m[7:0]};
                 2'b01: cache_d_data = {{24{cache_d_data_m[15]}}, cache_d_data_m[15:8]};
                 2'b10: cache_d_data = {{24{cache_d_data_m[23]}}, cache_d_data_m[23:16]};
@@ -92,7 +92,7 @@ always @(*) begin
             endcase
         end
         `CACHE_D_READ_LBU: begin
-            case (addr[30:31])
+            case (addr[31:30])
                 2'b00: cache_d_data = {{24{1'b0}}, cache_d_data_m[7:0]};
                 2'b01: cache_d_data = {{24{1'b0}}, cache_d_data_m[15:8]};
                 2'b10: cache_d_data = {{24{1'b0}}, cache_d_data_m[23:16]};
