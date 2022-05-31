@@ -9,7 +9,7 @@
 
 - [x] Let's hash! sha256手动挖矿 & 自动挖矿 & 哈希爆破
   + [x] 正向hash (POW1)
-  + [x] 对比和MIPS的hash速率
+  + [x] 对比和MIPS的hash速率 （RISCV用时是MIPS的一半，因为指令更少了）
   + [x] 逆算hash (POW2)  
 - [x] 构建risc-v工具链
   + [x] C到asm （本地编译github.com/riscv-collab/riscv-gnu-toolchain）
