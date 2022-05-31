@@ -20,6 +20,8 @@
 - [] 提供RISCV工具链在线服务
 - [Y] 提供MIPS工具链在线服务
 - [Y] 支持byte和half io （解决uart和ram的lb冲突问题）
-- [Y] support multiple io device （7位数码管）
-- [Y] support mapped io （指定地址映射）
+- [Y] support multiple io device
+  + [Y] 7位数码管
+  + [Y] 小键盘
+- [Y] support mapped io
 - [Y] support uart
