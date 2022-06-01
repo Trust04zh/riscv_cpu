@@ -121,13 +121,10 @@ void test010() {
         arr[2][i] = arr[0][i];
     }
     for (int i = 0; i < n; i++) {
-        for (int j = 0; j < wait; j++) {
-            output((i << 16) | arr[2][i]);
-        }
-    }
-    for (int i = 0; i < n; i++) {
-        if (arr[2][i] & 0b10000000) {
-            arr[2][i] = (~(arr[2][i] & 0b01111111)) + 1; // 2's complement
+    unsigned char unsigned_A = arr[2][i] & 0b10000000;
+        if (unsigned_A) {
+             unsigned_A= (~(arr[2][i] & 0b01111111)) + 1; // 2's complement
+             arr[2][i]= unsigned_A;
         }
     }
     for (int i = 0; i < n; i++) {
@@ -136,7 +133,6 @@ void test010() {
         }
     }
 }
-
 void test011() {
     for (int i = 0; i < n; i++) {
         arr[3][i] = arr[2][i];
