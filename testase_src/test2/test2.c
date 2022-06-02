@@ -205,7 +205,7 @@ int get_ieee754_unsigned(unsigned char ch) {
     int x = 0;
     for (int i = 7; i >= 0; i--) {
         if (ch & (0b1 << i)) {
-            x |= ((i + 128) & 0xff); // bias 127, reserved 1
+            x |= ((i + 127) & 0xff); // bias 127
             break;
         }
     }
@@ -220,7 +220,7 @@ int get_ieee754_sign_val(unsigned char ch) {
     }
     for (int i = 6; i >= 0; i--) {
         if (ch & (0b1 << i)) {
-            x |= ((i + 128) & 0xff); // bias 127, reserved 1
+            x |= ((i + 127) & 0xff); // bias 127
             break;
         }
     }
