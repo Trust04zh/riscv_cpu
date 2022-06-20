@@ -1,5 +1,5 @@
 # SUSTech-CS202_CPU_Project
-
+南科大CS202-计算机组成原理 满分(130/100)project
 ## Features
 
 - [x] Let's hash! sha256手动挖矿 & 自动挖矿 & 哈希爆破
