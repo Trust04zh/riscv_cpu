@@ -1,5 +1,8 @@
 # SUSTech_CPU_Project
 # 南科大-计算机组成原理 满分(130/100)project
+
+**用hdl写一个RISC-V(32位，ia拓展)的CUP，在artix_7板上运行简单的排序算法，以及模拟POW挖矿**  
+
 ## Features
 
 - [x] Let's hash! sha256手动挖矿 & 自动挖矿 & 哈希爆破
@@ -25,8 +28,6 @@
 
 ## Problems & fix
 
-一个[RISCV-toolchain-gcc](https://github.com/riscv-collab/riscv-gnu-toolchain)的bug（待确认）
-
-UART支持bute io -> mask
-映射地址过高 -> 栈迁移
-TOOL-CHAIN (好多问题)
+UART支持bute io -> mask  
+映射地址过高 -> 栈迁移  
+TOOL-CHAIN (好多问题)  
