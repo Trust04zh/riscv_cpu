@@ -28,6 +28,6 @@
 
 ## Problems & fix
 
-UART支持bute io -> mask  
+UART支持byte io -> mask  
 映射地址过高 -> 栈迁移  
 TOOL-CHAIN (好多问题)  
